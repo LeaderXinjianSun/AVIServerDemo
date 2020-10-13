@@ -4,15 +4,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:View="clr-namespace:AVIServerDemo.View"
         xmlns:local="clr-namespace:AVIServerDemo"
         mc:Ignorable="d"
         Title="{Binding Version,StringFormat=AVIServerDemo {0}}" Icon="server_64px_1186382_easyicon.net.ico"
 Height="600" Width="800" WindowStartupLocation ="CenterScreen" ResizeMode="CanResize" Closing="MetroWindow_Closing">
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="View\Dictionary1.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding AppLoadedEventCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
+        <Menu VerticalAlignment="Center">
+            <MenuItem Header="主页" Command="{Binding MenuActionCommand}" CommandParameter="0"></MenuItem>
+            <MenuItem Header="参数" Command="{Binding MenuActionCommand}" CommandParameter="1"></MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <View:HomePage Visibility="{Binding HomePageVisibility}"></View:HomePage>
+            <View:ParameterPage Visibility="{Binding ParameterPageVisibility,FallbackValue=Collapsed}"></View:ParameterPage>
+        </Grid>
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center">数据库</TextBlock>
+                    <Ellipse Style="{StaticResource EllipseStatusDataBase}"></Ellipse>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Controls:MetroWindow>

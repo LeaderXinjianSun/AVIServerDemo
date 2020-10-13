@@ -1,4 +1,5 @@
-﻿using AVIServerDemo.ViewModel;
+﻿using AVIServerDemo.Model;
+using AVIServerDemo.ViewModel;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,22 @@ namespace AVIServerDemo
             this.DataContext = new MainWindowViewModel();
         }
 
-        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-
+            e.Cancel = true;
+            Global.CameraImageViewer.Visibility = Visibility.Collapsed;
+            Metro metro = new Metro();
+            metro.ChangeAccent("Dark.Red");
+            bool r = await metro.ShowConfirm("确认", "你确定关闭软件吗?");
+            if (!r)
+            {
+                metro.ChangeAccent("Light.Blue");
+                Global.CameraImageViewer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                System.Windows.Application.Current.Shutdown();                
+            }
         }
     }
 }
