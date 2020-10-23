@@ -155,7 +155,7 @@ namespace AVIServerDemo.ViewModel
         public MainWindowViewModel()
         {
             #region 初始化参数
-            Version = "20201013";
+            Version = "20201023";
             MessageStr = "";
             HomePageVisibility = "Visible";
             ParameterPageVisibility = "Collapsed";
@@ -213,7 +213,6 @@ namespace AVIServerDemo.ViewModel
                 {
                     string stm = $"SELECT NOW()";
                     DataSet ds = mysql.Select(stm);
-                    mysql.DisConnect();
                     AddMessage($"数据库连接成功{ ds.Tables["table0"].Rows[0][0]}");
                     StatusDataBase = true;
                 }
@@ -256,7 +255,7 @@ namespace AVIServerDemo.ViewModel
                     {
                         DirectoryInfo folder = new DirectoryInfo(WorkPath);
                         FileInfo[] files = folder.GetFiles("*.bmp");
-                        if (files.Length > 0)
+                        if (files.Length > 0 && !IsFileLocked(files[0]))
                         {
                             string[] vs = files[0].Name.Split(new string[] { "_"}, StringSplitOptions.RemoveEmptyEntries);
                             if (vs.Length == 2)
@@ -275,7 +274,7 @@ namespace AVIServerDemo.ViewModel
                                 CameraIamge = new HImage(img);
 
                                 Mysql mysql = new Mysql();
-                                if (mysql.Connect())
+                                if (await Task.Run<bool>(() => { return mysql.Connect(); }))
                                 {                                    
                                     for (int i = 0; i < 16; i++)
                                     {
@@ -305,6 +304,10 @@ namespace AVIServerDemo.ViewModel
                                 AddMessage($"{str}文件名非法，已删除");
                             }
                         }
+                        else
+                        {
+                            await Task.Delay(500);
+                        }
                     }
                     
                 }
@@ -312,8 +315,29 @@ namespace AVIServerDemo.ViewModel
                 {
                     AddMessage(ex.Message);
                 }
-                await Task.Delay(1000);
+                await Task.Delay(100);
             }
+        }
+        protected bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+
+            //file is not locked
+            return false;
         }
         #endregion
     }
