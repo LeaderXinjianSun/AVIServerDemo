@@ -20,7 +20,12 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Width="80" Text="工作目录"></TextBlock>
                     <TextBox VerticalAlignment="Center" VerticalContentAlignment="Center" Width="220" Text="{Binding WorkPath}"></TextBox>
-                    <Button Width="40" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="选择" VerticalAlignment="Center" Margin="10,0,0,0" Command="{Binding FolderBrowserDialogCommand}"></Button>
+                    <Button Width="40" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="选择" VerticalAlignment="Center" Margin="10,0,0,0" Command="{Binding FolderBrowserDialogCommand}" CommandParameter="0"></Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Width="80" Text="存储目录"></TextBlock>
+                    <TextBox VerticalAlignment="Center" VerticalContentAlignment="Center" Width="220" Text="{Binding ImageSavePath}"></TextBox>
+                    <Button Width="40" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="选择" VerticalAlignment="Center" Margin="10,0,0,0" Command="{Binding FolderBrowserDialogCommand}" CommandParameter="1"></Button>
                 </StackPanel>
                 <Button Width="40" Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Content="保存" HorizontalAlignment="Right" Margin="0,10,40,0" Command="{Binding ParameterSaveCommand}"></Button>
             </StackPanel>

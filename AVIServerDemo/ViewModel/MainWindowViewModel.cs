@@ -84,6 +84,18 @@ namespace AVIServerDemo.ViewModel
                 this.RaisePropertyChanged("WorkPath");
             }
         }
+        private string imageSavePath;
+
+        public string ImageSavePath
+        {
+            get { return imageSavePath; }
+            set
+            {
+                imageSavePath = value;
+                this.RaisePropertyChanged("ImageSavePath");
+            }
+        }
+
         private HImage cameraIamge;
 
         public HImage CameraIamge
@@ -145,7 +157,7 @@ namespace AVIServerDemo.ViewModel
         #region 方法绑定
         public DelegateCommand AppLoadedEventCommand { get; set; }
         public DelegateCommand<object> MenuActionCommand { get; set; }
-        public DelegateCommand FolderBrowserDialogCommand { get; set; }
+        public DelegateCommand<object> FolderBrowserDialogCommand { get; set; }
         public DelegateCommand ParameterSaveCommand { get; set; }
         #endregion
         #region 变量
@@ -160,28 +172,41 @@ namespace AVIServerDemo.ViewModel
             HomePageVisibility = "Visible";
             ParameterPageVisibility = "Collapsed";
             WorkPath = Inifile.INIGetStringValue(iniParameterPath, "System", "WorkPath", "D:\\");
+            ImageSavePath = Inifile.INIGetStringValue(iniParameterPath, "System", "ImageSavePath", "D:\\");
             CameraROIList = new ObservableCollection<ROI>();
             #endregion
             AppLoadedEventCommand = new DelegateCommand(new Action(this.AppLoadedEventCommandExecute));
             MenuActionCommand = new DelegateCommand<object>(new Action<object>(this.MenuActionCommandExecute));
-            FolderBrowserDialogCommand = new DelegateCommand(new Action(this.FolderBrowserDialogCommandExecute));
+            FolderBrowserDialogCommand = new DelegateCommand<object>(new Action<object>(this.FolderBrowserDialogCommandExecute));
             ParameterSaveCommand = new DelegateCommand(new Action(this.ParameterSaveCommandExecute));
         }
 
         private void ParameterSaveCommandExecute()
         {
             Inifile.INIWriteValue(iniParameterPath, "System", "WorkPath", WorkPath);
+            Inifile.INIWriteValue(iniParameterPath, "System", "ImageSavePath", ImageSavePath);
             AddMessage("保存参数");
         }
 
-        private void FolderBrowserDialogCommandExecute()
+        private void FolderBrowserDialogCommandExecute(object obj)
         {
             using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
             {
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    WorkPath = dialog.SelectedPath;
+                    switch (obj.ToString())
+                    {
+                        case "0":
+                            WorkPath = dialog.SelectedPath;
+                            break;
+                        case "1":
+                            ImageSavePath = dialog.SelectedPath;
+                            break;
+                        default:
+                            break;
+                    }
+                    
                 }
             }
         }
@@ -260,18 +285,20 @@ namespace AVIServerDemo.ViewModel
                             string[] vs = files[0].Name.Split(new string[] { "_"}, StringSplitOptions.RemoveEmptyEntries);
                             if (vs.Length == 2)
                             {
-                                string[] vs1 = vs[1].Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
-                                if (!Directory.Exists(Path.Combine(WorkPath, vs1[0])))
-                                {
-                                    Directory.CreateDirectory(Path.Combine(WorkPath, vs1[0]));
-                                }
-                                File.Copy(files[0].FullName, Path.Combine(WorkPath, vs1[0], files[0].Name),true);
-                                string str = files[0].FullName;
-                                File.Delete(str);
 
                                 HObject img;
-                                HOperatorSet.ReadImage(out img, Path.Combine(WorkPath, vs1[0], files[0].Name));
+                                HOperatorSet.ReadImage(out img, files[0].FullName);
                                 CameraIamge = new HImage(img);
+
+                                string[] vs1 = vs[1].Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
+                                if (!Directory.Exists(Path.Combine(ImageSavePath, vs1[0])))
+                                {
+                                    Directory.CreateDirectory(Path.Combine(ImageSavePath, vs1[0]));
+                                }
+
+                                File.Copy(files[0].FullName, Path.Combine(ImageSavePath, vs1[0], files[0].Name), true);
+                                string str = files[0].FullName;
+                                File.Delete(str);
 
                                 Mysql mysql = new Mysql();
                                 if (await Task.Run<bool>(() => { return mysql.Connect(); }))
