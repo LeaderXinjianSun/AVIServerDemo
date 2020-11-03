@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30320.27
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AVIServerDemo", "AVIServerDemo\AVIServerDemo.csproj", "{E48EA0F1-1BF4-4FC7-A112-D70B3024DABC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewROI", "Halcon\ViewROI\ViewROI.csproj", "{C4F5C5DE-7EA8-47FE-8218-48138F48965F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalconViewer", "Halcon\HalconViewer\HalconViewer.csproj", "{6D0E5A8C-92C9-415E-90A7-69E418E17F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,20 +15,12 @@ Global
 		{E48EA0F1-1BF4-4FC7-A112-D70B3024DABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E48EA0F1-1BF4-4FC7-A112-D70B3024DABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E48EA0F1-1BF4-4FC7-A112-D70B3024DABC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4F5C5DE-7EA8-47FE-8218-48138F48965F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4F5C5DE-7EA8-47FE-8218-48138F48965F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4F5C5DE-7EA8-47FE-8218-48138F48965F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4F5C5DE-7EA8-47FE-8218-48138F48965F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D0E5A8C-92C9-415E-90A7-69E418E17F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D0E5A8C-92C9-415E-90A7-69E418E17F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D0E5A8C-92C9-415E-90A7-69E418E17F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D0E5A8C-92C9-415E-90A7-69E418E17F83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 		SolutionGuid = {83A6F51F-5A40-4CD3-848A-083C53BDAAEC}
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal
