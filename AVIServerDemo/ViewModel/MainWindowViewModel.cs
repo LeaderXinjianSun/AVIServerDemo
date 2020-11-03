@@ -338,7 +338,25 @@ namespace AVIServerDemo.ViewModel
                                 Mysql mysql = new Mysql();
                                 if (mysql.Connect())
                                 {
-                                    string stm = $"INSERT INTO aviproductdata (BoardID,PcsIndex,ResultItem1) VALUES ('{vs[0]}',{vs1[0]},'OK')";
+                                    string stm = "";
+                                    switch (vs[1])
+                                    {
+                                        case "M1":
+                                            stm = $"INSERT INTO aviproductdata (BoardID,PcsIndex,ResultItem1) VALUES ('{vs[0]}',{vs1[0]},'OK')";
+                                            break;
+                                        case "M2":
+                                            stm = $"UPDATE aviproductdata SET ResultItem2 = 'OK' WHERE BoardID = '{vs[0]}' AND PcsIndex = {vs1[0]}";
+                                            break;
+                                        case "M3":
+                                            stm = $"UPDATE aviproductdata SET ResultItem3 = 'OK' WHERE BoardID = '{vs[0]}' AND PcsIndex = {vs1[0]}";
+                                            break;
+                                        case "M4":
+                                            stm = $"UPDATE aviproductdata SET ResultItem4 = 'OK' WHERE BoardID = '{vs[0]}' AND PcsIndex = {vs1[0]}";
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    
                                     int result = mysql.executeQuery(stm);
                                     if (result < 1)
                                     {
